@@ -158,7 +158,7 @@ class ProductSeeder extends Seeder
                     'category_slug' => 'watches-jewelry',
                     'price' => 350,
                     'discount_price' => 265,
-                    'image' => 'https://images.unsplash.com/photo-1611591475165-8b389c9c0b24?auto=format&fit=crop&w=800&q=80',
+                    'image' => 'https://images.unsplash.com/photo-1639065643006-e217c4fee12e?auto=format&fit=crop&w=800&q=80',
                     'description' => 'An opulent 18K rose gold bangle encrusted with micro-pavé conflict-free lab diamonds and a secure concealed push-clasp.',
                 ],
                 [
