@@ -1,3 +1,8 @@
+# ==============================================================================
+# VELORA Store - Hostinger public_html Root .htaccess
+# Routes all web traffic seamlessly to /public without showing /public in the URL
+# ==============================================================================
+
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
@@ -5,10 +10,23 @@
 
     RewriteEngine On
 
-    # Block access to hidden files and sensitive directories
-    RewriteRule ^(\.env|\.git|composer\.(json|lock)|package\.(json|lock)|artisan) - [F,L,NC]
+    # Set DirectoryIndex to Laravel's entry point
+    DirectoryIndex public/index.php index.php
 
-    # Handle Front Controller...
+    # 1. Block access to hidden files and directories (.env, .git, etc.)
+    RewriteRule ^\.(.*)$ - [F,L]
+
+    # 2. Block direct HTTP access to core application folders
+    RewriteRule ^(app|bootstrap|config|database|resources|routes|storage|tests)/ - [F,L,NC]
+
+    # 3. Block direct HTTP access to root system and build files
+    RewriteRule ^(artisan|composer\.(json|lock)|package\.(json|lock)|vite\.config\.js|tailwind\.config\.js|postcss\.config\.js|phpunit\.xml|deploy\.sh|DEPLOY\.md|README\.md|HOSTINGER_GIT_PUSH_PULL\.md) - [F,L,NC]
+
+    # 4. Prevent canonical duplicate URL if someone manually types /public/
+    RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /public/(\S*) [NC]
+    RewriteRule ^public/(.*)$ /$1 [R=301,L]
+
+    # 5. Route all requests seamlessly into the public folder
     RewriteCond %{REQUEST_URI} !^/public/
     RewriteRule ^(.*)$ public/$1 [L]
 </IfModule>
