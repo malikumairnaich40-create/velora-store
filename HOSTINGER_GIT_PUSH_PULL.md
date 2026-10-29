@@ -72,7 +72,7 @@ Agar pehli dafa setup kar rahe hain:
 2. **Branch:** `main`
 3. **Install Directory:** 
    * Agar primary domain hai: `public_html`
-   * Agar addon domain ya subdomain hai: `domains/yourdomain.com/public_html`
+   * Agar addon domain ya subdomain hai: `domains/velora.rapidservice.org/public_html`
 4. **Create / Deploy** par click karein. Hostinger automatically GitHub se files download kar lega.
 
 #### Step 4: Aainda Updates (Future Pulls)
@@ -91,22 +91,22 @@ Laravel me sirf git pull kaafi nahi hota, database migrate karna, cache clear ka
 1. Hostinger hPanel me **Advanced > SSH Access** par jayein.
 2. SSH Status ko **Enabled** karein.
 3. Wahan aapko yeh details milengi:
-   * **SSH IP / Host:** (e.g. `123.45.67.89`)
+   * **SSH IP / Host:** (e.g. `82.29.186.101`)
    * **SSH Port:** `65002` *(Hostinger default port 65002 use karta hai)*
-   * **SSH Username:** `u123456789`
+   * **SSH Username:** `u187238888`
    * **Password:** Aapke hosting account ka password
 
 #### Step 2: Apne PC Se SSH Connect Karein
 Apne computer par Windows Terminal, PowerShell ya PuTTY open karein aur yeh command chalayein:
 ```bash
-ssh -p 65002 u123456789@YOUR_SERVER_IP
+ssh -p 65002 u187238888@82.29.186.101
 ```
-*(Apna username aur server IP replace karein, phir Enter daba kar password enter karein).*
+*(Apna password enter karein).*
 
 #### Step 3: Project Folder Me Jayein
 SSH me login hone ke baad apne website folder me jayein:
 ```bash
-cd domains/yourdomain.com/public_html
+cd domains/velora.rapidservice.org/public_html
 ```
 *(Agar single domain hai to `cd public_html` chalayein).*
 
