@@ -1,6 +1,6 @@
 # ==============================================================================
-# VELORA Store - Hostinger public_html Root .htaccess
-# Routes all web traffic seamlessly to /public without showing /public in the URL
+# VELORA Store - Hostinger Subdomain Root .htaccess
+# Handles routing directly to index.php or public/ folder while protecting system files
 # ==============================================================================
 
 <IfModule mod_rewrite.c>
@@ -10,23 +10,26 @@
 
     RewriteEngine On
 
-    # Set DirectoryIndex to Laravel's entry point
-    DirectoryIndex public/index.php index.php
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
-    # 1. Block access to hidden files and directories (.env, .git, etc.)
-    RewriteRule ^\.(.*)$ - [F,L]
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
 
-    # 2. Block direct HTTP access to core application folders
-    RewriteRule ^(app|bootstrap|config|database|resources|routes|storage|tests)/ - [F,L,NC]
+    # Block direct access to hidden files and sensitive directories
+    RewriteRule ^(\.env|\.git|composer\.(json|lock)|package\.(json|lock)|artisan) - [F,L,NC]
+    RewriteRule ^(app|bootstrap|config|database|resources|routes|tests)/ - [F,L,NC]
 
-    # 3. Block direct HTTP access to root system and build files
-    RewriteRule ^(artisan|composer\.(json|lock)|package\.(json|lock)|vite\.config\.js|tailwind\.config\.js|postcss\.config\.js|phpunit\.xml|deploy\.sh|DEPLOY\.md|README\.md|HOSTINGER_GIT_PUSH_PULL\.md) - [F,L,NC]
-
-    # 4. Prevent canonical duplicate URL if someone manually types /public/
-    RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /public/(\S*) [NC]
-    RewriteRule ^public/(.*)$ /$1 [R=301,L]
-
-    # 5. Route all requests seamlessly into the public folder
+    # If public folder exists and index.php is inside public, route to public
+    RewriteCond %{DOCUMENT_ROOT}/public/index.php -f
     RewriteCond %{REQUEST_URI} !^/public/
     RewriteRule ^(.*)$ public/$1 [L]
+
+    # Send Requests To Front Controller
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
 </IfModule>
